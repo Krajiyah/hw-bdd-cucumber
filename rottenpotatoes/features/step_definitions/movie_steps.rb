@@ -14,13 +14,21 @@ Then /(.*) seed movies should exist/ do | n_seeds |
   Movie.count.should be n_seeds.to_i
 end
 
+When /I follow "(.*)"/ do |following|
+  if following == "Movie Title"
+    click_link "title_header"
+  elsif following == "Release Date"
+    click_link "release_date_header"
+  else
+    fail "Can't follow #{following}"
+  end
+end
+
 # Make sure that one string (regexp) occurs before or after another one
 #   on the same page
 
 Then /I should see "(.*)" before "(.*)"/ do |e1, e2|
-  #  ensure that that e1 occurs before e2.
-  #  page.body is the entire content of the page as a string.
-  fail "Unimplemented"
+  page.body.should =~ /#{e1}.*#{e2}/m
 end
 
 # Make it easier to express checking or unchecking several boxes at once
