@@ -7,7 +7,7 @@ Given /the following movies exist/ do |movies_table|
 end
 
 And /I am on the RottenPotatoes home page/ do
-  visit root_path
+  visit movies_path
 end
 
 Then /(.*) seed movies should exist/ do | n_seeds |
@@ -28,10 +28,30 @@ end
 #  "When I check the following ratings: G"
 
 When /I (un)?check the following ratings: (.*)/ do |uncheck, rating_list|
-  # HINT: use String#split to split up the rating_list, then
-  #   iterate over the ratings and reuse the "When I check..." or
-  #   "When I uncheck..." steps in lines 89-95 of web_steps.rb
-  fail "Unimplemented"
+  rating_list.split(",").each do |rating|
+    rating = "ratings_" + rating
+    if uncheck
+      uncheck(rating)
+    else
+      check(rating)
+    end
+  end
+end
+
+When /I submit/ do
+  click_button("ratings_submit")
+end
+
+Then /I should(nt)? see (.*) movies/ do |nt, rating_list|
+  ratings = rating_list.split(",")
+  movies = Movie.where(:rating => ratings)
+  movies.each do |movie|
+    unless nt
+      page.should have_content(movie.title)
+    else
+      page.should have_no_content(movie.title)
+    end
+  end
 end
 
 Then /I should see all the movies/ do
