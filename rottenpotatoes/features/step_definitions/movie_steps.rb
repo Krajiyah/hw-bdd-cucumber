@@ -55,6 +55,7 @@ Then /I should(nt)? see (.*) movies/ do |nt, rating_list|
 end
 
 Then /I should see all the movies/ do
-  # Make sure that all the movies in the app are visible in the table
-  fail "Unimplemented"
+  steps %Q{
+    Then I should see G,PG,PG-13,NC-17,R movies
+  }
 end

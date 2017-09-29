@@ -30,6 +30,6 @@ Scenario: restrict to movies with 'PG' or 'R' ratings
   And I shouldnt see PG-13,G,NC-17 movies
 
 Scenario: all ratings selected
-  Given the 'G', 'PG', 'PG-13', 'R' checkboxes are checked
-  When the submit button is pressed
-  Then the 'G', 'PG', 'PG-13', 'R' movies are visible
+  Given I check the following ratings: G,PG,PG-13,NC-17,R
+  When I submit
+  Then I should see all movies
